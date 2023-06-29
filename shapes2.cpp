@@ -1,7 +1,12 @@
 #include<iostream>
 #include<vector>
+#include<chrono>
+#include<thread>
+#include<cstdlib>
 
 using namespace std;
+using namespace chrono;
+using namespace this_thread;
 
 class Matrix{
 private:
@@ -34,6 +39,7 @@ public:
 		{
 			mat[x][y++]=1;
 		}
+		display();
 	}
 	void makeLineLeft(int x, int y, int length)
 	{
@@ -41,6 +47,7 @@ public:
 		{
 			mat[x][y--]=1;
 		}
+		display();
 	}
 	void makeLineUp(int x, int y, int length)
 	{
@@ -48,6 +55,7 @@ public:
 		{
 			mat[x--][y]=1;
 		}
+		display();
 	}
 	void makeLineDown(int x, int y, int length)
 	{
@@ -55,8 +63,19 @@ public:
 		{
 			mat[x++][y]=1;
 		}
+		display();
 	}
-	void display()
+	void reset_mat()
+	{
+		for(int i=0;i<height;i++)
+		{
+			for(int j=0;j<width;j++)
+			{
+				mat[i][j]=0;
+			}
+		}
+	}
+	void display(bool reset=false)
 	{
 		for(int i=0; i<height; i++)
 		{
@@ -70,17 +89,31 @@ public:
 			}
 			cout<<endl;
 		}
+		sleep_for(seconds(1));
+		system("clear");
+		if(reset)
+			reset_mat();
+		
+	}
+	void makeSquare(int x, int y, int length)
+	{
+		makeLineRight(x,y,length);
+		makeLineDown(x,y+length,length);
+		makeLineLeft(x+length,y+length,length);
+		makeLineUp(x+length,y,length);
+		display(true);
 	}
 };
-
+void effects(Matrix m)
+{
+	m.makeSquare(10,10,5);
+	m.makeSquare(10,10,4);
+	m.makeSquare(15,15,3);
+}
 int main()
 {
 	Matrix m1(30, 30);
-	m1.makeLineRight(14,14,10);
-	m1.makeLineDown(14,24,10);
-	m1.makeLineLeft(24,24,10);
-	m1.makeLineUp(24,14,10);
-	m1.display();
+	effects(m1);	
 	return 0;	
 }
 		
