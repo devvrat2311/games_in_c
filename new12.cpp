@@ -60,6 +60,7 @@ void move()
 
 int main()
 {
+	borderMake();
 	grid.insert(yCoord, xCoord, 1);
 	grid.display();
 	move();
